@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block title %}CountAi-DashBoard{% endblock %}
+
+{% block heading %}CountAi DashBoard{% endblock %}
+
+{% block content %}
+    <h3>Total Number of Mills: {{ mills|length }}</h3>
+    
+
+    
+
+    
+    <div class="card-container" >
+        {% for index, row in mills.iterrows() %}
+            <div class="card" >
+                {% if row["lastuv_inspectionOn"] <= lh_time %}
+
+                    <img src="{{ url_for('static', path='/Image/material-symbols-mode-off-on-2.svg') }}" class="card-img-top"
+                        alt="..." width="500" height="150">
+                {% else %}
+                    <img src="{{ url_for('static', path='/Image/material-symbols-mode-off-on-4.svg') }}" class="card-img-top"
+                    alt="..." width="500" height="150">
+                {% endif %}      
+                <div class="card-body"  > 
+                    <h5 class="card-title" style="text-align: center; padding-bottom:2rem;">{{ row["millName"] }}</h5>
+                    
+                        <div class="container" >
+                            <div class="row">
+                              <div class="col"><p>Uptime : {{Uptime}} Mins</p></div>
+                              <div class="col"><p>Today's Count: {{ row["lastDay_totalCount"] }}</p></div>
+                              <div class="w-100"></div>
+                              <div class="col"><p>Down Time : {{1440 - Uptime}} Mins</p></div>
+                              <div class="col"><p>Today's UV - Defect: {{ row["lastDay_uv_Defect"] }}</p></div>
+                              <div class="w-100"></div>
+                              <div class="col"><p>Software Status : OFF</p></div>
+                              <div class="col"><p>Today's ConeTip - Defect: {{ row["lastDay_conetip_Defect"] }}</p></div>
+                              <div class="w-100"></div>
+                              <div class="col"><p>Camera-1 : OFF</p></div>
+                              <div class="col"><p>Today's UV_Defect %:  {{ row["ldefectPercen_UV"] }}</p></div>
+                              <div class="w-100"></div>
+                              <div class="col"><p>Camera-2 : OFF</p></div>
+                              <div class="col"><p>Today's CT_Defect %: {{ row["ldefectPercen_CT"] }}</p>   </div>
+                              <div class="w-100"></div>
+                              <div class="col"><p>Image-1 : OFF</p></div>
+                              <div class="col"><p class="card-text">Last inspection at: {{ row["lastuv_inspectionOn"] }}</p></div>
+                              <div class="w-100"></div>
+                              <div class="col"><p>Image-2 : OFF</p></div>
+                              <div class="col"></div>
+                              <div class="w-100"></div>
+                              <div class="col"><p>Controller Status : OFF</p></div>
+                              <div class="col"></div>
+                            </div>
+                          </div>
+                    
+                    <div style="display: flex; gap: 10px;">
+                        <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas"
+                        data-bs-target="#offcanvasBottom{{ index }}" aria-controls="offcanvasBottom{{ index }}" >View Mill Details</button>
+                        <a href="/uptime/{{ row["millName"] }}">
+                            <button href="/uptime/{{ row["millName"] }}" class="btn btn-primary" type="button" id="customButton{{ index }}">CurrentDay Uptime</button>
+                        </a>
+                    </div>
+                    
+                    <!-- Replace the existing <a> element -->
+                    
+
+
+                    <div class="offcanvas offcanvas-bottom" tabindex="-1" id="offcanvasBottom{{ index }}"
+                        aria-labelledby="offcanvasBottomLabel{{ index }}">
+                        <div class="offcanvas-header">
+                            <h5 class="offcanvas-title" id="offcanvasBottomLabel{{ index }}">Overview </h5>
+                            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                        </div>
+                        <div class="offcanvas-body">
+                            <h1>Mill Data: <img src="" alt=""></h1>
+                            <div class="badge bg-primary text-wrap" style="width: 12rem; height:3rem; padding-top:1rem; "><p>Mill Name : {{ row.millName }}</p></div>                            
+                            <div class="badge bg-secondary text-wrap" style="width: 12rem; height:3rem; padding-top:1rem;"><p>Total Count : {{ row["totalCount"] }}</p></div>
+                            <div class="badge bg-danger  text-wrap" style="width: 12rem; height:3rem; padding-top:1rem;"><p>Uv_Defect : {{ row["total_uv_Defect"] }}</p></div>
+                            <div class="badge bg-success text-wrap" style="width: 12rem; height:3rem; padding-top:1rem;"><p>Uv_Nondefect : {{ row["total_uv_Nondefect"] }}</p></div>
+                            <div class="badge bg-danger  text-wrap" style="width: 12rem; height:3rem; padding-top:1rem;"><p>Conetip_Defect : {{ row["total_conetip_Defect"] }}</p></div>
+                            <div class="badge bg-success text-wrap" style="width: 12rem; height:3rem; padding-top:1rem;"><p>Conetip_Nondefect : {{ row["total_conetip_Nondefect"] }}</p></div>
+                            <div class="badge bg-danger  text-wrap" style="width: 12rem; height:3rem; padding-top:1rem;"><p>lDay Uv_Defect : {{ row["lastDay_uv_Defect"] }}</p></div>
+                            <div class="badge bg-success text-wrap" style="width: 12rem; height:3rem; padding-top:1rem;"><p>lDay Uv_Nondefect : {{ row["lastDay_uv_Nondefect"] }}</p></div>
+                            <div class="badge bg-danger  text-wrap" style="width: 12rem; height:3rem; padding-top:1rem;"><p>lDay CT_Defect : {{ row["lastDay_conetip_Defect"] }}</p></div>
+                            <div class="badge bg-success text-wrap" style="width: 12rem; height:3rem; padding-top:1rem;"><p>lDay CT_Nondefect : {{ row["lastDay_conetip_Nondefect"] }}</p></div>
+                            <div class="badge bg-info    text-wrap" style="width: 12rem; height:3rem; padding-top:1rem; "><p>last uv_inspectionOn : {{ row["lastuv_inspectionOn"] }}</p></div>
+                            <div class="badge bg-info    text-wrap" style="width: 12rem; height:3rem; padding-top:1rem;"><p>last CT_inspectionOn : {{ row["lastconetip_inspectionOn"] }}</p></div>
+                            <div class="badge bg-primary text-wrap" style="width: 12rem; height:3rem; padding-top:1rem;"><p>first InspectionOn : {{ row["firstInspectionOn"] }}</p></div>
+                            <div class="badge bg-primary text-wrap" style="width: 12rem; height:3rem; padding-top:1rem;"><p>total Uv_Count : {{ row["totaluvCount"] }}</p></div>
+                            <div class="badge bg-primary text-wrap" style="width: 12rem; height:3rem; padding-top:1rem;"><p>total CT_Count : {{ row["totalconetipCount"] }}</p></div>
+                            <div class="badge bg-primary text-wrap" style="width: 12rem; height:3rem; padding-top:1rem;"><p>lDay_total Uv_Count : {{ row["lastDay_totaluvCount"] }}</p></div>
+                            <div class="badge bg-primary text-wrap" style="width: 12rem; height:3rem; padding-top:1rem;"><p>lDay_total CT_Count : {{ row["lastDay_totalconetipCount"] }}</p></div>
+                            <div class="badge bg-primary text-wrap" style="width: 12rem; height:3rem; padding-top:1rem;"><p>lDay_totalCount : {{ row["lastDay_totalCount"] }}</p> </div>
+                            <div class="badge bg-primary text-wrap" style="width: 12rem; height:3rem; padding-top:1rem;"><p>tdefectPercen_UV : {{ "%.1f" % row["tdefectPercen_UV"] }}%</p> </div>
+                            <div class="badge bg-primary text-wrap" style="width: 12rem; height:3rem; padding-top:1rem;"><p>tdefectPercen_CT : {{ "%.1f" % row["tdefectPercen_CT"]  }}%</p> </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+
+    </div>
+{% endblock %}
+

@@ -1,0 +1,74 @@
+{
+    "sitaramam": {
+      "tip": {
+        "6099": {
+          "conealarmstatus": "on",
+          "detectedconetype": "club_green",
+          "filelocation": "D:\\projects\\coneinspection-ui/classLive/2023-09-01/club_green/moon_green",
+          "selectedconetype": "club_green",
+          "timestamp": "2023-09-01"
+        },
+        "6100": {
+          "conealarmstatus": "on",
+          "detectedconetype": "club_green",
+          "filelocation": "D:\\projects\\coneinspection-ui/classLive/2023-09-01/club_green/moon_green",
+          "selectedconetype": "club_green",
+          "timestamp": "2023-09-01"
+        }},
+    "uv": {
+        "6087": {
+            "detecteduv": "False",
+            "filelocation": "D:\\projects\\coneinspection-ui/uvClassLive/2023-08-24/noDefect/1692870654.7219367.png",
+            "timestamp": "2023-08-24",
+            "uvalarmstatus": "off"
+        },
+        "6088": {
+            "detecteduv": "False",
+            "filelocation": "D:\\projects\\coneinspection-ui/uvClassLive/2023-08-24/noDefect/1692870658.6230102.png",
+            "timestamp": "2023-08-24",
+            "uvalarmstatus": "off"
+        },
+        "6089": {
+            "detecteduv": "False",
+            "filelocation": "D:\\projects\\coneinspection-ui/uvClassLive/2023-08-24/noDefect/1692870661.0154707.png",
+            "timestamp": "2023-08-24",
+            "uvalarmstatus": "off"
+        }}
+    },
+    "sitaramam1": {
+        "tip": {
+          "6099": {
+            "conealarmstatus": "on",
+            "detectedconetype": "club_green",
+            "filelocation": "D:\\projects\\coneinspection-ui/classLive/2023-09-01/club_green/moon_green",
+            "selectedconetype": "club_green",
+            "timestamp": "2023-09-01"
+          },
+          "6100": {
+            "conealarmstatus": "on",
+            "detectedconetype": "club_green",
+            "filelocation": "D:\\projects\\coneinspection-ui/classLive/2023-09-01/club_green/moon_green",
+            "selectedconetype": "club_green",
+            "timestamp": "2023-09-01"
+          }},
+      "uv": {
+          "6087": {
+              "detecteduv": "False",
+              "filelocation": "D:\\projects\\coneinspection-ui/uvClassLive/2023-08-24/noDefect/1692870654.7219367.png",
+              "timestamp": "2023-08-24",
+              "uvalarmstatus": "off"
+          },
+          "6088": {
+              "detecteduv": "False",
+              "filelocation": "D:\\projects\\coneinspection-ui/uvClassLive/2023-08-24/noDefect/1692870658.6230102.png",
+              "timestamp": "2023-08-24",
+              "uvalarmstatus": "off"
+          },
+          "6089": {
+              "detecteduv": "False",
+              "filelocation": "D:\\projects\\coneinspection-ui/uvClassLive/2023-08-24/noDefect/1692870661.0154707.png",
+              "timestamp": "2023-08-24",
+              "uvalarmstatus": "off"
+          }}
+      }
+}
