@@ -5,6 +5,7 @@ from firebase_admin import db, credentials
 import json
 from datetime import datetime
 from pandas import json_normalize
+import pyrebase
 
 
 
@@ -13,20 +14,40 @@ from pandas import json_normalize
 
 def updatedData():
     
-    cred = credentials.Certificate("pg2fbtesting.json")
-    if not firebase_admin._apps:
-        firebase_admin.initialize_app(cred, {
-            "databaseURL": "https://cone-inspection-default-rtdb.firebaseio.com/"
-        })
+    # cred = credentials.Certificate("pg2fbtesting.json")
+    # if not firebase_admin._apps:
+    #     firebase_admin.initialize_app(cred, {
+    #         "databaseURL": "https://cone-inspection-default-rtdb.firebaseio.com/"
+    #     })
+    
+    
+    firebaseConfig = {
+        "apiKey": "AIzaSyANRoZgrkpyVG947sZYJVUFPfxEz3Z1mVc",
+        "authDomain": "cone-inspection.firebaseapp.com",
+        "databaseURL": "https://cone-inspection-default-rtdb.firebaseio.com",
+        "projectId": "cone-inspection",
+        "storageBucket": "cone-inspection.appspot.com",
+        "messagingSenderId": "596245764155",
+        "appId": "1:596245764155:web:1f0b0cfb91816b3cdb241e",
+        "measurementId": "G-VQ7R8FJJSV"
+        }
+    firebase = pyrebase.initialize_app(firebaseConfig)
 
-    ref = db.reference("/")
-    fbData = ref.get()
-    uv_df = pd.DataFrame(columns=[])
-    conetip_df = pd.DataFrame(columns=[])
-    mill_list = []
-    final_df = pd.DataFrame(columns=['millName', 'totalCount','totaluvCount' ,'totalconetipCount' ,'total_uv_Defect', 'total_uv_Nondefect', 'total_conetip_Nondefect', 'total_conetip_Defect', 'lastDay_uv_Defect', 'lastDay_uv_Nondefect', 'lastDay_conetip_Nondefect', 'lastDay_conetip_Defect', 'lastuv_inspectionOn', 'lastconetip_inspectionOn','firstInspectionOn', 'lastDay_totaluvCount', 'lastDay_totalconetipCount', 'lastDay_totalCount','ldefectPercen_UV', 'ldefectPercen_CT', 'tdefectPercen_UV', 'tdefectPercen_CT'])
+    # ref = db.reference("/")
+    # fbData = ref.get()
+    
+    all_keys = db.child('/').shallow().get()
 
-    for i in fbData:
+    print(all_keys.val())
+    # uv_df = pd.DataFrame(columns=[])
+    # conetip_df = pd.DataFrame(columns=[])
+    # mill_list = []
+    # final_df = pd.DataFrame(columns=['millName', 'totalCount','totaluvCount' ,'totalconetipCount' ,'total_uv_Defect', 'total_uv_Nondefect', 'total_conetip_Nondefect', 'total_conetip_Defect', 'lastDay_uv_Defect', 'lastDay_uv_Nondefect', 'lastDay_conetip_Nondefect', 'lastDay_conetip_Defect', 'lastuv_inspectionOn', 'lastconetip_inspectionOn','firstInspectionOn', 'lastDay_totaluvCount', 'lastDay_totalconetipCount', 'lastDay_totalCount','ldefectPercen_UV', 'ldefectPercen_CT', 'tdefectPercen_UV', 'tdefectPercen_CT'])
+
+
+
+
+    '''for i in fbData:
         if i in ['bangladesh', 'indorama-turkey', 'lagnam','rswm', 'sagar','sitaramam']:
             print('millname: , ',i)
     
@@ -60,8 +81,8 @@ def updatedData():
             total_uv_Nondefect = (len(temp_uv[(temp_uv['detecteduv'] == 'False') ]))
             total_conetip_Nondefect = len(temp_conetip[(temp_conetip['detectedcone'] == False) ])
             total_conetip_Defect = len(temp_conetip[(temp_conetip['detectedcone'] == True) ])
-            # temp_conetip['timestamp'] = temp_conetip['timestamp'].astype(str)
-            # temp_uv['timestamp'] = temp_uv['timestamp'].astype(str)
+            temp_conetip['timestamp'] = temp_conetip['timestamp'].astype(str)
+            temp_uv['timestamp'] = temp_uv['timestamp'].astype(str)
             lastDay_uv_Defect = len(temp_uv[(temp_uv['detecteduv'] == True) & (temp_uv['timestamp'] == max(temp_uv['timestamp']))])
             lastDay_uv_Defect = len(temp_uv[(temp_uv['detecteduv'] == True) & (temp_uv['timestamp'] == max(temp_uv['timestamp']))])
             lastDay_uv_Nondefect = len(temp_uv[(temp_uv['detecteduv'] == 'False') & (temp_uv['timestamp'] == max(temp_uv['timestamp']))])
@@ -103,14 +124,14 @@ def updatedData():
             data = [millName, totalCount,totaluvCount ,totalconetipCount , total_uv_Defect, total_uv_Nondefect, total_conetip_Nondefect, total_conetip_Defect, lastDay_uv_Defect, lastDay_uv_Nondefect, lastDay_conetip_Nondefect, lastDay_conetip_Defect, lastuv_inspectionOn, lastconetip_inspectionOn,firstInspectionOn, lastDay_totaluvCount, lastDay_totalconetipCount, lastDay_totalCount,ldefectPercen_UV, ldefectPercen_CT, tdefectPercen_UV, tdefectPercen_CT]
             print('FP-uv  : ',ldefectPercen_UV,'Fp-CT : ',ldefectPercen_CT,"%" )
             final_df.loc[len(final_df)] = data
-            print('fnal dne')
+            print('fnal dne')'''
         
         
 
 
-    print(final_df.head())
-    final_df.to_csv('new.csv')
-    return final_df
+    # print(final_df.head())
+    # final_df.to_csv('new.csv')
+    # return final_df
 
 
 updatedData()

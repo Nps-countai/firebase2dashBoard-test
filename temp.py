@@ -10,7 +10,7 @@ import random
 import logging
 from uptimeimage import imageGenerator
 import numpy as np
-from dataLoader import updatedData
+# from dataLoaderv1 import updatedData
 
 logging.basicConfig(filename="dashBoard_log.log", level=logging.INFO)
 templates = Jinja2Templates(directory="templates") 
@@ -39,7 +39,7 @@ async def read_posts(request: Request):
     timestamp_obj = datetime.strptime(str(LE), '%Y-%m-%d %H:%M:%S.%f%z')
     LE = timestamp_obj.strftime('%Y-%m-%d %H:%M:%S')
     return templates.TemplateResponse("blog.html", {"request": request, 
-                                                    "mills" : updatedData(),#pd.read_csv('new.csv')updatedData(),
+                                                    "mills" : pd.read_csv('finalDF.csv'), #updatedData(),
                                                     "Uptime": uptime,
                                                     "le":  LE,
                                                     "lh_time" : lh_time})
@@ -86,5 +86,5 @@ def get_chart(item_id: str,request: Request):
 
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="127.0.0.1", port=8089)
+    uvicorn.run(app, host="127.0.0.1", port=8088)
 

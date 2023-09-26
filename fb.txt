@@ -1,0 +1,92 @@
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyANRoZgrkpyVG947sZYJVUFPfxEz3Z1mVc",
+  authDomain: "cone-inspection.firebaseapp.com",
+  databaseURL: "https://cone-inspection-default-rtdb.firebaseio.com",
+  projectId: "cone-inspection",
+  storageBucket: "cone-inspection.appspot.com",
+  messagingSenderId: "596245764155",
+  appId: "1:596245764155:web:1f0b0cfb91816b3cdb241e",
+  measurementId: "G-VQ7R8FJJSV"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+
+
+{
+  "rules": {
+    ".read": true,
+    ".write": true,
+    "bangladesh": {
+      "conetip": {
+        "$coneitem": {
+          ".indexOn": ["timestamp"]
+        }
+      }
+    }
+  }
+}
+
+
+<div class="container" >
+                            <div class="row">
+                              <div class="col"><p>Uptime : {{Uptime}} Mins</p></div>
+                              <div class="col"><p>Today's Count: {{ row["lastDay_totalCount"] }}</p></div>
+                              <div class="w-100"></div>
+                              <div class="col"><p>Down Time : {{1440 - Uptime}} Mins</p></div>
+                              <div class="col"><p>Today's UV - Defect: {{ row["lastDay_uv_Defect"] }}</p></div>
+                              <div class="w-100"></div>
+                              <div class="col"><p>Software Status : OFF</p></div>
+                              <div class="col"><p>Today's ConeTip - Defect: {{ row["lastDay_conetip_Defect"] }}</p></div>
+                              <div class="w-100"></div>
+                              <div class="col"><p>Camera-1 : OFF</p></div>
+                              <div class="col"><p>Today's UV_Defect %:  {{ row["ldefectPercen_UV"] }}</p></div>
+                              <div class="w-100"></div>
+                              <div class="col"><p>Camera-2 : OFF</p></div>
+                              <div class="col"><p>Today's CT_Defect %: {{ row["ldefectPercen_CT"] }}</p>   </div>
+                              <div class="w-100"></div>
+                              <div class="col"><p>Image-1 : OFF</p></div>
+                              <div class="col"><p class="card-text">Last inspection at: {{ row["lastuv_inspectionOn"] }}</p></div>
+                              <div class="w-100"></div>
+                              <div class="col"><p>Image-2 : OFF</p></div>
+                              <div class="col"></div>
+                              <div class="w-100"></div>
+                              <div class="col"><p>Controller Status : OFF</p></div>
+                              <div class="col"></div>
+                            </div>
+                          </div>
+
+
+
+<div class="offcanvas-body">
+                            <h1>Mill Data: <img src="" alt=""></h1>
+                            <div class="badge bg-primary text-wrap" style="width: 12rem; height:3rem; padding-top:1rem; "><p>Mill Name : {{ row.millName }}</p></div>                            
+                            <div class="badge bg-secondary text-wrap" style="width: 12rem; height:3rem; padding-top:1rem;"><p>Total Count : {{ row["totalCount"] }}</p></div>
+                            <div class="badge bg-danger  text-wrap" style="width: 12rem; height:3rem; padding-top:1rem;"><p>Uv_Defect : {{ row["total_uv_Defect"] }}</p></div>
+                            <div class="badge bg-success text-wrap" style="width: 12rem; height:3rem; padding-top:1rem;"><p>Uv_Nondefect : {{ row["total_uv_Nondefect"] }}</p></div>
+                            <div class="badge bg-danger  text-wrap" style="width: 12rem; height:3rem; padding-top:1rem;"><p>Conetip_Defect : {{ row["total_conetip_Defect"] }}</p></div>
+                            <div class="badge bg-success text-wrap" style="width: 12rem; height:3rem; padding-top:1rem;"><p>Conetip_Nondefect : {{ row["total_conetip_Nondefect"] }}</p></div>
+                            <div class="badge bg-danger  text-wrap" style="width: 12rem; height:3rem; padding-top:1rem;"><p>lDay Uv_Defect : {{ row["lastDay_uv_Defect"] }}</p></div>
+                            <div class="badge bg-success text-wrap" style="width: 12rem; height:3rem; padding-top:1rem;"><p>lDay Uv_Nondefect : {{ row["lastDay_uv_Nondefect"] }}</p></div>
+                            <div class="badge bg-danger  text-wrap" style="width: 12rem; height:3rem; padding-top:1rem;"><p>lDay CT_Defect : {{ row["lastDay_conetip_Defect"] }}</p></div>
+                            <div class="badge bg-success text-wrap" style="width: 12rem; height:3rem; padding-top:1rem;"><p>lDay CT_Nondefect : {{ row["lastDay_conetip_Nondefect"] }}</p></div>
+                            <div class="badge bg-info    text-wrap" style="width: 12rem; height:3rem; padding-top:1rem; "><p>last uv_inspectionOn : {{ row["lastuv_inspectionOn"] }}</p></div>
+                            <div class="badge bg-info    text-wrap" style="width: 12rem; height:3rem; padding-top:1rem;"><p>last CT_inspectionOn : {{ row["lastconetip_inspectionOn"] }}</p></div>
+                            <div class="badge bg-primary text-wrap" style="width: 12rem; height:3rem; padding-top:1rem;"><p>first InspectionOn : {{ row["firstInspectionOn"] }}</p></div>
+                            <div class="badge bg-primary text-wrap" style="width: 12rem; height:3rem; padding-top:1rem;"><p>total Uv_Count : {{ row["totaluvCount"] }}</p></div>
+                            <div class="badge bg-primary text-wrap" style="width: 12rem; height:3rem; padding-top:1rem;"><p>total CT_Count : {{ row["totalconetipCount"] }}</p></div>
+                            <div class="badge bg-primary text-wrap" style="width: 12rem; height:3rem; padding-top:1rem;"><p>lDay_total Uv_Count : {{ row["lastDay_totaluvCount"] }}</p></div>
+                            <div class="badge bg-primary text-wrap" style="width: 12rem; height:3rem; padding-top:1rem;"><p>lDay_total CT_Count : {{ row["lastDay_totalconetipCount"] }}</p></div>
+                            <div class="badge bg-primary text-wrap" style="width: 12rem; height:3rem; padding-top:1rem;"><p>lDay_totalCount : {{ row["lastDay_totalCount"] }}</p> </div>
+                            <div class="badge bg-primary text-wrap" style="width: 12rem; height:3rem; padding-top:1rem;"><p>tdefectPercen_UV : {{ "%.1f" % row["tdefectPercen_UV"] }}%</p> </div>
+                            <div class="badge bg-primary text-wrap" style="width: 12rem; height:3rem; padding-top:1rem;"><p>tdefectPercen_CT : {{ "%.1f" % row["tdefectPercen_CT"]  }}%</p> </div>
+                        </div>
