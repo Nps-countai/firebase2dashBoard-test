@@ -6,11 +6,11 @@ from fastapi.responses import HTMLResponse
 import pandas as pd
 from datetime import datetime, timedelta
 import time
-import random
+import threading
 import logging
 from uptimeimage import imageGenerator
 import numpy as np
-# from dataLoaderv1 import updatedData
+
 
 logging.basicConfig(filename="dashBoard_log.log", level=logging.INFO)
 templates = Jinja2Templates(directory="templates") 
@@ -39,7 +39,7 @@ async def read_posts(request: Request):
     timestamp_obj = datetime.strptime(str(LE), '%Y-%m-%d %H:%M:%S.%f%z')
     LE = timestamp_obj.strftime('%Y-%m-%d %H:%M:%S')
     return templates.TemplateResponse("blog.html", {"request": request, 
-                                                    "mills" : pd.read_csv('finalDF.csv'), #updatedData(),
+                                                    "mills" :  pd.read_csv('finalDF.csv'),#updatedData(),
                                                     "Uptime": uptime,
                                                     "le":  LE,
                                                     "lh_time" : lh_time})
@@ -83,8 +83,22 @@ def get_chart(item_id: str,request: Request):
         "data":data}) 
 
 
-
+def runapp():
+    uvicorn.run(app, host="127.0.0.1", port=8087)
+def updateData():
+    from dataLoaderv1 import updatedData
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="127.0.0.1", port=8088)
+    
+    # creating threads
+    t1 = threading.Thread(target=runapp, name='t1')
+    t2 = threading.Thread(target=updateData, name='t2')
+ 
+    # starting threads
+    t1.start()
+    t2.start()
+ 
+    # wait until all threads finish
+    t1.join()
+    t2.join()
 

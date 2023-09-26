@@ -28,8 +28,8 @@
                     <p>Today's Count: {{ row["conetip_total"] + row["uv_total"]  }}</p>
                     <p>Today's UV - Defect: {{ row["uv_Defect"] }}</p>
                     <p>Today's ConeTip - Defect: {{ row["conetip_Defect"] }}</p>
-                    <p>Today's UV_Defect %:  {{ row["defectPercen_UV"] }}</p>
-                    <p>Today's CT_Defect %: {{ row["defectPercen_CT"] }}</p>
+                    <p>Today's UV_Defect %:  {{ "%.1f" % row["defectPercen_UV"] }}</p>
+                    <p>Today's CT_Defect %: {{ "%.1f" % row["defectPercen_CT"] }}</p>
                     <p class="card-text">Last inspection at: {{ row["lastactive"][:19] }}</p>
                     
                     <div style="display: flex; gap: 10px;">

@@ -115,10 +115,8 @@ def tipalaram_data(i):
         try: 
                 wildcard_query = db.child(i).child("tipalarm").order_by_child("start_time").limit_to_last(1).get()
                 od = wildcard_query.val()
-                print('tip : ',od)
                 status = od[list(od.keys())[0]]['alarm_status']
-                fromtime = od[list(od.keys())[0]]['start_time']
-                
+                fromtime = od[list(od.keys())[0]]['start_time']                
                 return status, fromtime
         except:
                 print('tipalaram_data NONE')
@@ -130,8 +128,6 @@ def uvalaram_data(i):
         try: 
                 wild_query = db.child(i).child("uvalarm").order_by_child("time").limit_to_last(1).get()
                 od = wild_query.val()
-                print('uv: ',od)
-                
                 status = od[list(od.keys())[0]]['alarmstatus']
                 fromtime = od[list(od.keys())[0]]['time']
                 
@@ -158,45 +154,48 @@ db = firebase.database()
 # data define
 uv_df = pd.DataFrame(columns=[])
 conetip_df = pd.DataFrame(columns=[])
-mill_list = []
-final_df = pd.DataFrame(columns=['millName','conetip_Nondefect','conetip_Defect','conetip_total', 'defectPercen_CT','last_ctAt','uv_Nondefect','uv_Defect','uv_total', 'defectPercen_UV','last_uvAt' ,'lastactive','tip_Alrmstatus', 'tipstatus_fromtime','uv_Alrmstatus', 'uvstatus_fromtime'])
 
 def updatedData():
-        all_keys = db.child('/').shallow().get()
-        n=0
-        for i in all_keys.val():
-                try:
-                        n+=1
-                        print(n)
-                        mill_list.append(i)
-                        conetip_Nondefect,conetip_Defect, defectPercen_CT,last_ctAt = tip_data(i)               
-                        uv_Nondefect,uv_Defect, defectPercen_UV,last_uvAt = uv_data(i)               
-                        tip_Alrmstatus, tipstatus_fromtime = tipalaram_data(i)
-                        uv_Alrmstatus, uvstatus_fromtime = uvalaram_data(i)
-                        print(uv_Alrmstatus, uvstatus_fromtime)
-                        print(tip_Alrmstatus, tipstatus_fromtime)
-                        
-                        # final df
-                        lastactive = last_uvAt if last_ctAt<last_uvAt else last_ctAt
-                        data = [i,conetip_Nondefect,conetip_Defect,(conetip_Nondefect + conetip_Defect), defectPercen_CT,last_ctAt,uv_Nondefect,uv_Defect,(uv_Nondefect + uv_Defect), defectPercen_UV,last_uvAt,lastactive,tip_Alrmstatus, tipstatus_fromtime, uv_Alrmstatus, uvstatus_fromtime]
-                        print(data)
-                        final_df.loc[len(final_df)] = data
-                        
-                        
-                        
-                        print('name: ',i)
-                        print('-------------------------------------------------------------------------------------------\n\n\n\n\n')
-                except :
-                        print()
-                        print('failed  :',i)
-                        print('-------------------------------------------------------------------------------------------\n\n\n\n\n')
+        while True:
+                mill_list = []
+                final_df = pd.DataFrame(columns=['millName','conetip_Nondefect','conetip_Defect','conetip_total', 'defectPercen_CT','last_ctAt','uv_Nondefect','uv_Defect','uv_total', 'defectPercen_UV','last_uvAt' ,'lastactive','tip_Alrmstatus', 'tipstatus_fromtime','uv_Alrmstatus', 'uvstatus_fromtime'])
+
+                all_keys = db.child('/').shallow().get()
+                n=0
+                for i in all_keys.val():
+                        try:
+                                n+=1
+                                print(n)
+                                mill_list.append(i)
+                                conetip_Nondefect,conetip_Defect, defectPercen_CT,last_ctAt = tip_data(i)               
+                                uv_Nondefect,uv_Defect, defectPercen_UV,last_uvAt = uv_data(i)               
+                                tip_Alrmstatus, tipstatus_fromtime = tipalaram_data(i)
+                                uv_Alrmstatus, uvstatus_fromtime = uvalaram_data(i)
+                                
+                                
+                                # final df
+                                lastactive = last_uvAt if last_ctAt<last_uvAt else last_ctAt
+                                data = [i,conetip_Nondefect,conetip_Defect,(conetip_Nondefect + conetip_Defect), defectPercen_CT,last_ctAt,uv_Nondefect,uv_Defect,(uv_Nondefect + uv_Defect), defectPercen_UV,last_uvAt,lastactive,tip_Alrmstatus, tipstatus_fromtime, uv_Alrmstatus, uvstatus_fromtime]
+                                print(data)
+                                final_df.loc[len(final_df)] = data
+                                
+                                
+                                
+                                print('name: ',i)
+                                print('-------------------------------------------------------------------------------------------\n\n\n\n\n')
+                        except :
+                                print()
+                                print('failed  :',i)
+                                print('-------------------------------------------------------------------------------------------\n\n\n\n\n')
                         
                 
                         
 
                 
-        final_df.to_csv('finalDF.csv')
-        return final_df
+                final_df.to_csv('finalDF.csv')
+                print("Syncing......")
+                time.sleep(30)
+                
 
 
 

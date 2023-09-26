@@ -43,16 +43,16 @@
                             alt="..." width="40" height="40">
                         {% endif %}
                     </td>
-                    <td>
+                    <td style="text-align: center; vertical-align: middle;">
                         {% if row["uv_Alrmstatus"] == "off" %}
-                            <button type="button" class="btn btn-success">
+                            <button type="button" class="btn btn-success" >
                                 Off <span class="badge bg-success"></span>
                         {% else %}
                             <button type="button" class="btn btn-danger">
                                 ON <span class="badge bg-danger"></span>
                         {% endif %}
                     </td>
-                    <td>
+                    <td style="text-align: center; vertical-align: middle;">
                         {% if row["tip_Alrmstatus"] == "off" %}
                             <button type="button" class="btn btn-success">
                                 Off <span class="badge bg-success"></span>
