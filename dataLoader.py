@@ -50,7 +50,7 @@ def updatedData():
             # print(temp_conetip)      
             temp_conetip.to_csv('temp_conetip.csv')
             
-            
+            print(temp_uv.dtypes)
             
             
             
@@ -60,8 +60,8 @@ def updatedData():
             total_uv_Nondefect = (len(temp_uv[(temp_uv['detecteduv'] == 'False') ]))
             total_conetip_Nondefect = len(temp_conetip[(temp_conetip['detectedcone'] == False) ])
             total_conetip_Defect = len(temp_conetip[(temp_conetip['detectedcone'] == True) ])
-            temp_conetip['timestamp'] = temp_conetip['timestamp'].astype(str)
-            temp_uv['timestamp'] = temp_uv['timestamp'].astype(str)
+            # temp_conetip['timestamp'] = temp_conetip['timestamp'].astype(str)
+            # temp_uv['timestamp'] = temp_uv['timestamp'].astype(str)
             lastDay_uv_Defect = len(temp_uv[(temp_uv['detecteduv'] == True) & (temp_uv['timestamp'] == max(temp_uv['timestamp']))])
             lastDay_uv_Defect = len(temp_uv[(temp_uv['detecteduv'] == True) & (temp_uv['timestamp'] == max(temp_uv['timestamp']))])
             lastDay_uv_Nondefect = len(temp_uv[(temp_uv['detecteduv'] == 'False') & (temp_uv['timestamp'] == max(temp_uv['timestamp']))])
