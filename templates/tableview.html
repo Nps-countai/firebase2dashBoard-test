@@ -19,7 +19,8 @@
             <th scope="col">#</th>
             <th scope="col">Mill Name</th>
             <th scope="col">Machine Status</th>
-            <th scope="col">Alarm Status</th>
+            <th scope="col">UV-Alarm Status</th>
+            <th scope="col">Cone-Alarm Status</th>
             <th scope="col">Today's Count</th>
             <th scope="col">Today's UV - Defect</th>
             <th scope="col">Today's ConeTip - Defect</th>
@@ -34,7 +35,7 @@
                     <th scope="row">{{index}}</th>
                     <td>{{ row["millName"] }}</td>                      
                     <td>
-                        {% if row["lastuv_inspectionOn"] <= lh_time %}
+                        {% if row["lastactive"] <= lh_time %}
                         <img src="{{ url_for('static', path='/Image/material-symbols-mode-off-on-2.svg') }}" class="card-img-top"
                             alt="..." width="40" height="40">
                         {% else %}
@@ -43,7 +44,7 @@
                         {% endif %}
                     </td>
                     <td>
-                        {% if row["alarm_st"] == 0 %}
+                        {% if row["uv_Alrmstatus"] == "off" %}
                             <button type="button" class="btn btn-success">
                                 Off <span class="badge bg-success"></span>
                         {% else %}
@@ -51,12 +52,21 @@
                                 ON <span class="badge bg-danger"></span>
                         {% endif %}
                     </td>
-                    <td>{{ row["lastDay_totalCount"] }}</td>
-                    <td>{{ row["lastDay_uv_Defect"] }}</td>
-                    <td>{{ row["lastDay_conetip_Defect"] }}</td>
-                    <td>{{ row["ldefectPercen_UV"] }}</td>
-                    <td>{{ row["ldefectPercen_CT"] }}</td>
-                    <td>{{ row["lastuv_inspectionOn"] }}</td>
+                    <td>
+                        {% if row["tip_Alrmstatus"] == "off" %}
+                            <button type="button" class="btn btn-success">
+                                Off <span class="badge bg-success"></span>
+                        {% else %}
+                            <button type="button" class="btn btn-danger">
+                                ON <span class="badge bg-danger"></span>
+                        {% endif %}
+                    </td>
+                    <td>{{ row["conetip_total"] + row["uv_total"] }}</td>
+                    <td>{{ row["uv_Defect"] }}</td>
+                    <td>{{ row["conetip_Defect"] }}</td>
+                    <td>{{ "%.1f" % row["defectPercen_UV"] }}</td>
+                    <td>{{ "%.1f" % row["defectPercen_CT"] }}</td>
+                    <td>{{ row["lastactive"][:19] }}</td>
                 </tr>
             {% endfor %}
         </tbody>
