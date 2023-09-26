@@ -51,7 +51,22 @@
                             <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                         </div>
                         <div class="offcanvas-body">
-                            
+                            <h1>Mill Data: <img src="" alt=""></h1>
+                            <div class="badge bg-primary text-wrap" style="width: 12rem; height:3rem; padding-top:1rem; "><p>Mill Name : {{ row.millName }}</p></div>                            
+                            <div class="badge bg-secondary text-wrap" style="width: 12rem; height:3rem; padding-top:1rem;"><p>Total Count : {{ row["conetip_total"] + row["uv_total"] }}</p></div>
+                            <div class="badge bg-danger  text-wrap" style="width: 12rem; height:3rem; padding-top:1rem;"><p>Uv_Defect : {{ row["uv_Defect"] }}</p></div>
+                            <div class="badge bg-success text-wrap" style="width: 12rem; height:3rem; padding-top:1rem;"><p>Uv_Nondefect : {{ row["uv_Nondefect"] }}</p></div>
+                            <div class="badge bg-danger  text-wrap" style="width: 12rem; height:3rem; padding-top:1rem;"><p>Conetip_Defect : {{ row["conetip_Defect"] }}</p></div>
+                            <div class="badge bg-success text-wrap" style="width: 12rem; height:3rem; padding-top:1rem;"><p>Conetip_Nondefect : {{ row["conetip_Nondefect"] }}</p></div>
+                            <div class="badge bg-secondary  text-wrap" style="width: 12rem; height:3rem; padding-top:1rem;"><p> Conetip_Count : {{ row["conetip_total"] }}</p></div>
+                            <div class="badge bg-secondary  text-wrap" style="width: 12rem; height:3rem; padding-top:1rem;"><p> Uv_Count : {{ row["uv_total"] }}</p></div>
+                            <div class="badge bg-success text-wrap" style="width: 12rem; height:3rem; padding-top:1rem;"><p>lastconetip_AT : {{ row["last_ctAt"] }}</p></div>
+                            <div class="badge bg-success text-wrap" style="width: 12rem; height:3rem; padding-top:1rem;"><p>lastuvtip_AT : {{ row["last_uvAt"] }}</p></div>
+                            <div class="badge bg-info  text-wrap" style="width: 12rem; height:3rem; padding-top:1rem;"><p>tip_Alrmstatus : {{ row["tip_Alrmstatus"] }}</p></div>
+                            <div class="badge bg-info text-wrap" style="width: 12rem; height:3rem; padding-top:1rem;"><p>tip_Alrmstatus_fromtime : {{ row["tipstatus_fromtime"] }}</p></div>
+                            <div class="badge bg-info  text-wrap" style="width: 12rem; height:3rem; padding-top:1rem;"><p>Uv_Alrmstatus : {{ row["uv_Alrmstatus"] }}</p></div>
+                            <div class="badge bg-info text-wrap" style="width: 12rem; height:3rem; padding-top:1rem;"><p>Uv_Alrmstatus fromtime : {{ row["uvstatus_fromtime"] }}</p></div>
+                            <div class="badge bg-info    text-wrap" style="width: 12rem; height:3rem; padding-top:1rem; "><p>last inspectionOn : {{ row["lastactive"] }}</p></div>
                         </div>
                     </div>
                 </div>
