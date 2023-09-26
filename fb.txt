@@ -26,15 +26,23 @@ const analytics = getAnalytics(app);
   "rules": {
     ".read": true,
     ".write": true,
-    "bangladesh": {
-      "conetip": {
-        "$coneitem": {
+    "$mill": {
+      "tip": {
           ".indexOn": ["timestamp"]
-        }
-      }
+        },
+      "uv": {
+          ".indexOn": ["timestamp"]
+        },
+      "tipalarm": {
+          ".indexOn": ["start_time"]
+        },
+      "uvalarm": {
+          ".indexOn": ["time"]
+        }  
     }
   }
 }
+
 
 
 <div class="container" >

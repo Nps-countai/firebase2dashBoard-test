@@ -57,7 +57,7 @@ async def read_performance(request: Request):
 async def read_performance(request: Request):
     logging.info('User Refreshed Performance At: '+str(datetime.now())+'Data Has been updated')
     return templates.TemplateResponse("tableview.html", {"request": request,
-                                                         "mills" : updatedData(),#,pd.read_csv('new.csv')
+                                                         "mills" : pd.read_csv('finalDF.csv'),#updatedData(),
                                                          "lh_time" : lh_time})
 
 # ModelAnalysis
