@@ -2,6 +2,7 @@ import pyrebase
 import time
 from datetime import datetime,timedelta
 import pandas as pd
+import pytz
 
 
 
@@ -25,11 +26,28 @@ def parse_datetime(datetime_str):
                 startDay = current_date.strftime("%Y-%m-%d %H:%M:%S")
                 endday = dayback.strftime("%Y-%m-%d %H:%M:%S")
                 return startDay, endday
-        except:
-                # only Date
-                print('data not in proper format')
+        except ValueError:
+                try:
+                        current_datetime =  datetime.strptime(datetime_str, '%Y-%m-%d %H:%M:%S.%f%z')
+                        current_date = current_datetime.date()
+                        dayback = current_date + timedelta(days=1)
+                        startDay = current_date.strftime("%Y-%m-%d %H:%M:%S")
+                        endday = dayback.strftime("%Y-%m-%d %H:%M:%S")
+                        return startDay, endday
+                except:
+                        # only Date
+                        print('data not in proper format')
 
-
+def timezonenormalizer(datestr):
+        # Parse the timestamp and convert to UTC
+        timestamp = datetime.strptime(datestr, '%Y-%m-%d %H:%M:%S.%f%z')
+        utc_timestamp = timestamp.astimezone(pytz.UTC)
+        # Convert to Indian Standard Time (IST)
+        indian_timezone = pytz.timezone('Asia/Kolkata')
+        ist_timestamp = utc_timestamp.astimezone(indian_timezone)
+        # Format as a string
+        formatted_timestamp = ist_timestamp.strftime('%Y-%m-%d %H:%M:%S.%f%z')
+        return formatted_timestamp
 
 
 # tip process
@@ -139,14 +157,14 @@ def uvalaram_data(i):
 
 
 firebaseConfig = {
-        "apiKey": "AIzaSyANRoZgrkpyVG947sZYJVUFPfxEz3Z1mVc",
-        "authDomain": "cone-inspection.firebaseapp.com",
-        "databaseURL": "https://cone-inspection-default-rtdb.firebaseio.com",
-        "projectId": "cone-inspection",
-        "storageBucket": "cone-inspection.appspot.com",
-        "messagingSenderId": "596245764155",
-        "appId": "1:596245764155:web:1f0b0cfb91816b3cdb241e",
-        "measurementId": "G-VQ7R8FJJSV"
+        "apiKey": "AIzaSyBxn5dlUSpeogE8iT8ZdcC07LSr0Dxtk78",
+        "authDomain": "conei-4a476.firebaseapp.com",
+        "databaseURL": "https://conei-4a476-default-rtdb.firebaseio.com",
+        "projectId": "conei-4a476",
+        "storageBucket": "conei-4a476.appspot.com",
+        "messagingSenderId": "99303364339",
+        "appId": "1:99303364339:web:2b35fa36a438119edd4986",
+        "measurementId": "G-QT2CRBY4NX"
         }
 # db initial
 firebase = pyrebase.initialize_app(firebaseConfig)
@@ -172,7 +190,10 @@ def updatedData():
                                 tip_Alrmstatus, tipstatus_fromtime = tipalaram_data(i)
                                 uv_Alrmstatus, uvstatus_fromtime = uvalaram_data(i)
                                 
-                                
+                                last_ctAt = timezonenormalizer(last_ctAt)
+                                last_uvAt = timezonenormalizer(last_uvAt) 
+                                tipstatus_fromtime = timezonenormalizer(tipstatus_fromtime) 
+                                uvstatus_fromtime = timezonenormalizer(uvstatus_fromtime) 
                                 # final df
                                 lastactive = last_uvAt if last_ctAt<last_uvAt else last_ctAt
                                 data = [i,conetip_Nondefect,conetip_Defect,(conetip_Nondefect + conetip_Defect), defectPercen_CT,last_ctAt,uv_Nondefect,uv_Defect,(uv_Nondefect + uv_Defect), defectPercen_UV,last_uvAt,lastactive,tip_Alrmstatus, tipstatus_fromtime, uv_Alrmstatus, uvstatus_fromtime]

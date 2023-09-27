@@ -16,7 +16,7 @@ logging.basicConfig(filename="dashBoard_log.log", level=logging.INFO)
 templates = Jinja2Templates(directory="templates") 
 
 # last hr time
-last_hour_date_time = datetime.now() - timedelta(hours= 1)
+last_hour_date_time = datetime.now() - timedelta(minutes= 5)
 lh_time = last_hour_date_time.strftime('%Y-%m-%d %H:%M:%S')
 
 
@@ -84,7 +84,7 @@ def get_chart(item_id: str,request: Request):
 
 
 def runapp():
-    uvicorn.run(app, host="127.0.0.1", port=8087)
+    uvicorn.run(app, host="127.0.0.1", port=8089)
 def updateData():
     from dataLoaderv1 import updatedData
 

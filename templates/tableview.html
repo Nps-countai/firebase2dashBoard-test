@@ -33,7 +33,7 @@
             {% for index, row in mills.iterrows() %}
                 <tr>
                     <th scope="row">{{index}}</th>
-                    <td>{{ row["millName"] }}</td>                      
+                    <td style="vertical-align: middle;">{{ row["millName"] }}</td>                      
                     <td>
                         {% if row["lastactive"] <= lh_time %}
                         <img src="{{ url_for('static', path='/Image/material-symbols-mode-off-on-2.svg') }}" class="card-img-top"
@@ -45,28 +45,33 @@
                     </td>
                     <td style="text-align: center; vertical-align: middle;">
                         {% if row["uv_Alrmstatus"] == "off" %}
-                            <button type="button" class="btn btn-success" >
+                            <button type="button" class="btn btn-danger" >
                                 Off <span class="badge bg-success"></span>
                         {% else %}
-                            <button type="button" class="btn btn-danger">
+                            <button type="button" class="btn btn-success">
                                 ON <span class="badge bg-danger"></span>
                         {% endif %}
                     </td>
                     <td style="text-align: center; vertical-align: middle;">
                         {% if row["tip_Alrmstatus"] == "off" %}
-                            <button type="button" class="btn btn-success">
+                            <button type="button" class="btn btn-danger">
                                 Off <span class="badge bg-success"></span>
                         {% else %}
-                            <button type="button" class="btn btn-danger">
+                            <button type="button" class="btn btn-success">
                                 ON <span class="badge bg-danger"></span>
                         {% endif %}
                     </td>
-                    <td>{{ row["conetip_total"] + row["uv_total"] }}</td>
-                    <td>{{ row["uv_Defect"] }}</td>
-                    <td>{{ row["conetip_Defect"] }}</td>
-                    <td>{{ "%.1f" % row["defectPercen_UV"] }}</td>
-                    <td>{{ "%.1f" % row["defectPercen_CT"] }}</td>
-                    <td>{{ row["lastactive"][:19] }}</td>
+                    <td style="text-align: center; vertical-align: middle;">
+                        {{ row["conetip_total"] + row["uv_total"] }}</td>
+                    <td style="text-align: center; vertical-align: middle;">
+                        {{ row["uv_Defect"] }}</td>
+                    <td style="text-align: center; vertical-align: middle;">
+                        {{ row["conetip_Defect"] }}</td>
+                    <td style="text-align: center; vertical-align: middle;">
+                        {{ "%.1f" % row["defectPercen_UV"] }}</td>
+                    <td style="text-align: center; vertical-align: middle;">
+                        {{ "%.1f" % row["defectPercen_CT"] }}</td>
+                    <td style="vertical-align: middle;">{{ row["lastactive"][:19] }}</td>
                 </tr>
             {% endfor %}
         </tbody>
