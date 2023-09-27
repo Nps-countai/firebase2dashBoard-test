@@ -198,31 +198,31 @@ def updatedData():
                 all_keys = db.child('/').shallow().get()
                 n=0
                 for i in all_keys.val():
-                        # try:
-                        n+=1
-                        print('millNO : ',n)
-                        mill_list.append(i)
-                        conetip_Nondefect,conetip_Defect, defectPercen_CT,last_ctAt = tip_data(i)               
-                        uv_Nondefect,uv_Defect, defectPercen_UV,last_uvAt = uv_data(i)               
-                        tip_Alrmstatus, tipstatus_fromtime = tipalaram_data(i)
-                        uv_Alrmstatus, uvstatus_fromtime = uvalaram_data(i)
-                        
-                        last_ctAt = timezonenormalizer(last_ctAt)
-                        last_uvAt = timezonenormalizer(last_uvAt) 
-                        tipstatus_fromtime = timezonenormalizer(tipstatus_fromtime) 
-                        uvstatus_fromtime = timezonenormalizer(uvstatus_fromtime) 
-                        # final df
-                        lastactive = last_uvAt if last_ctAt<last_uvAt else last_ctAt
-                        data = [i,conetip_Nondefect,conetip_Defect,(conetip_Nondefect + conetip_Defect), defectPercen_CT,last_ctAt,uv_Nondefect,uv_Defect,(uv_Nondefect + uv_Defect), defectPercen_UV,last_uvAt,lastactive,tip_Alrmstatus, tipstatus_fromtime, uv_Alrmstatus, str(uvstatus_fromtime)]
-                        # print(data)
-                        final_df.loc[len(final_df)] = data                               
-                                                        
-                        print('name: ',i)
-                        print('-------------------------------------------------------------------------------------------\n')
-                        # except :
-                        #         print()
-                        #         print('failed  :',i)
-                        #         print('-------------------------------------------------------------------------------------------\n')
+                        try:
+                                n+=1
+                                print('millNO : ',n)
+                                mill_list.append(i)
+                                conetip_Nondefect,conetip_Defect, defectPercen_CT,last_ctAt = tip_data(i)               
+                                uv_Nondefect,uv_Defect, defectPercen_UV,last_uvAt = uv_data(i)               
+                                tip_Alrmstatus, tipstatus_fromtime = tipalaram_data(i)
+                                uv_Alrmstatus, uvstatus_fromtime = uvalaram_data(i)
+                                
+                                last_ctAt = timezonenormalizer(last_ctAt)
+                                last_uvAt = timezonenormalizer(last_uvAt) 
+                                tipstatus_fromtime = timezonenormalizer(tipstatus_fromtime) 
+                                uvstatus_fromtime = timezonenormalizer(uvstatus_fromtime) 
+                                # final df
+                                lastactive = last_uvAt if last_ctAt<last_uvAt else last_ctAt
+                                data = [i,conetip_Nondefect,conetip_Defect,(conetip_Nondefect + conetip_Defect), defectPercen_CT,last_ctAt,uv_Nondefect,uv_Defect,(uv_Nondefect + uv_Defect), defectPercen_UV,last_uvAt,lastactive,tip_Alrmstatus, tipstatus_fromtime, uv_Alrmstatus, str(uvstatus_fromtime)]
+                                # print(data)
+                                final_df.loc[len(final_df)] = data                               
+                                                                
+                                print('name: ',i)
+                                print('-------------------------------------------------------------------------------------------\n')
+                        except :
+                                print()
+                                print('failed  :',i)
+                                print('-------------------------------------------------------------------------------------------\n')
                 
                 final_df.to_csv('finalDF.csv')
                 print('Last sync on : ',datetime.now())
