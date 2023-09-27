@@ -32,7 +32,7 @@
         <tbody>
             {% for index, row in mills.iterrows() %}
                 <tr>
-                    <th scope="row">{{index}}</th>
+                    <th style="vertical-align: middle;" scope="row">{{index}}</th>
                     <td style="vertical-align: middle;">{{ row["millName"] }}</td>                      
                     <td>
                         {% if row["lastactive"] <= lh_time %}
