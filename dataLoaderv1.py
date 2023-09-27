@@ -6,48 +6,76 @@ import pytz
 
 
 
-
-
-
 def parse_datetime(datetime_str):
     try:
-        
-        current_datetime =  datetime.strptime(datetime_str, '%Y-%m-%d %H:%M:%S.%f')
+        # with ms
+        current_datetime =  datetime.strptime(datetime_str, '%Y-%m-%d %H:%M:%S%z')
         current_date = current_datetime.date()
         dayback = current_date + timedelta(days=1)
         startDay = current_date.strftime("%Y-%m-%d %H:%M:%S")
         endday = dayback.strftime("%Y-%m-%d %H:%M:%S")
         return startDay, endday
+        
+        
     except ValueError:
         try:
-                current_datetime =  datetime.strptime(datetime_str, '%Y-%m-%d %H:%M:%S')
+                # without ms
+                current_datetime =  datetime.strptime(datetime_str, '%Y-%m-%d %H:%M:%S.%f%z')
                 current_date = current_datetime.date()
                 dayback = current_date + timedelta(days=1)
                 startDay = current_date.strftime("%Y-%m-%d %H:%M:%S")
                 endday = dayback.strftime("%Y-%m-%d %H:%M:%S")
                 return startDay, endday
+            
         except ValueError:
                 try:
-                        current_datetime =  datetime.strptime(datetime_str, '%Y-%m-%d %H:%M:%S.%f%z')
-                        current_date = current_datetime.date()
-                        dayback = current_date + timedelta(days=1)
-                        startDay = current_date.strftime("%Y-%m-%d %H:%M:%S")
-                        endday = dayback.strftime("%Y-%m-%d %H:%M:%S")
-                        return startDay, endday
-                except:
-                        # only Date
-                        print('data not in proper format')
+                    # with ms
+                    current_datetime =  datetime.strptime(datetime_str, '%Y-%m-%d %H:%M:%S.%f')
+                    current_date = current_datetime.date()
+                    dayback = current_date + timedelta(days=1)
+                    startDay = current_date.strftime("%Y-%m-%d %H:%M:%S")
+                    endday = dayback.strftime("%Y-%m-%d %H:%M:%S")
+                    return startDay, endday
+                        
+                except ValueError:
+                        try:
+                            # without ms
+                            current_datetime =  datetime.strptime(datetime_str, '%Y-%m-%d %H:%M:%S')
+                            current_date = current_datetime.date()
+                            dayback = current_date + timedelta(days=1)
+                            startDay = current_date.strftime("%Y-%m-%d %H:%M:%S")
+                            endday = dayback.strftime("%Y-%m-%d %H:%M:%S")
+                            return startDay, endday
+                        except:
+                            # only Date
+                            print('data not in proper format')
+
+
 
 def timezonenormalizer(datestr):
-        # Parse the timestamp and convert to UTC
-        timestamp = datetime.strptime(datestr, '%Y-%m-%d %H:%M:%S.%f%z')
-        utc_timestamp = timestamp.astimezone(pytz.UTC)
-        # Convert to Indian Standard Time (IST)
-        indian_timezone = pytz.timezone('Asia/Kolkata')
-        ist_timestamp = utc_timestamp.astimezone(indian_timezone)
-        # Format as a string
-        formatted_timestamp = ist_timestamp.strftime('%Y-%m-%d %H:%M:%S.%f%z')
-        return formatted_timestamp
+        if isinstance(datestr, str):
+                try:
+                        # Parse the timestamp and convert to UTC
+                        timestamp = datetime.strptime(datestr, '%Y-%m-%d %H:%M:%S.%f%z')
+                        utc_timestamp = timestamp.astimezone(pytz.UTC)
+                        # Convert to Indian Standard Time (IST)
+                        indian_timezone = pytz.timezone('Asia/Kolkata')
+                        ist_timestamp = utc_timestamp.astimezone(indian_timezone)
+                        # Format as a string
+                        formatted_timestamp = ist_timestamp.strftime('%Y-%m-%d %H:%M:%S.%f%z')
+                        return formatted_timestamp
+                except ValueError:
+                        # Parse the timestamp and convert to UTC
+                        timestamp = datetime.strptime(datestr, '%Y-%m-%d %H:%M:%S%z')
+                        utc_timestamp = timestamp.astimezone(pytz.UTC)
+                        # Convert to Indian Standard Time (IST)
+                        indian_timezone = pytz.timezone('Asia/Kolkata')
+                        ist_timestamp = utc_timestamp.astimezone(indian_timezone)
+                        # Format as a string
+                        formatted_timestamp = ist_timestamp.strftime('%Y-%m-%d %H:%M:%S.%f%z')
+                        return formatted_timestamp
+        else:
+                print('int type')
 
 
 # tip process
@@ -170,31 +198,31 @@ def updatedData():
                 all_keys = db.child('/').shallow().get()
                 n=0
                 for i in all_keys.val():
-                        try:
-                                n+=1
-                                print('millNO : ',n)
-                                mill_list.append(i)
-                                conetip_Nondefect,conetip_Defect, defectPercen_CT,last_ctAt = tip_data(i)               
-                                uv_Nondefect,uv_Defect, defectPercen_UV,last_uvAt = uv_data(i)               
-                                tip_Alrmstatus, tipstatus_fromtime = tipalaram_data(i)
-                                uv_Alrmstatus, uvstatus_fromtime = uvalaram_data(i)
-                                
-                                last_ctAt = timezonenormalizer(last_ctAt)
-                                last_uvAt = timezonenormalizer(last_uvAt) 
-                                tipstatus_fromtime = timezonenormalizer(tipstatus_fromtime) 
-                                uvstatus_fromtime = timezonenormalizer(uvstatus_fromtime) 
-                                # final df
-                                lastactive = last_uvAt if last_ctAt<last_uvAt else last_ctAt
-                                data = [i,conetip_Nondefect,conetip_Defect,(conetip_Nondefect + conetip_Defect), defectPercen_CT,last_ctAt,uv_Nondefect,uv_Defect,(uv_Nondefect + uv_Defect), defectPercen_UV,last_uvAt,lastactive,tip_Alrmstatus, tipstatus_fromtime, uv_Alrmstatus, uvstatus_fromtime]
-                                # print(data)
-                                final_df.loc[len(final_df)] = data                               
-                                                                
-                                print('name: ',i)
-                                print('-------------------------------------------------------------------------------------------\n')
-                        except :
-                                print()
-                                print('failed  :',i)
-                                print('-------------------------------------------------------------------------------------------\n')
+                        # try:
+                        n+=1
+                        print('millNO : ',n)
+                        mill_list.append(i)
+                        conetip_Nondefect,conetip_Defect, defectPercen_CT,last_ctAt = tip_data(i)               
+                        uv_Nondefect,uv_Defect, defectPercen_UV,last_uvAt = uv_data(i)               
+                        tip_Alrmstatus, tipstatus_fromtime = tipalaram_data(i)
+                        uv_Alrmstatus, uvstatus_fromtime = uvalaram_data(i)
+                        
+                        last_ctAt = timezonenormalizer(last_ctAt)
+                        last_uvAt = timezonenormalizer(last_uvAt) 
+                        tipstatus_fromtime = timezonenormalizer(tipstatus_fromtime) 
+                        uvstatus_fromtime = timezonenormalizer(uvstatus_fromtime) 
+                        # final df
+                        lastactive = last_uvAt if last_ctAt<last_uvAt else last_ctAt
+                        data = [i,conetip_Nondefect,conetip_Defect,(conetip_Nondefect + conetip_Defect), defectPercen_CT,last_ctAt,uv_Nondefect,uv_Defect,(uv_Nondefect + uv_Defect), defectPercen_UV,last_uvAt,lastactive,tip_Alrmstatus, tipstatus_fromtime, uv_Alrmstatus, str(uvstatus_fromtime)]
+                        # print(data)
+                        final_df.loc[len(final_df)] = data                               
+                                                        
+                        print('name: ',i)
+                        print('-------------------------------------------------------------------------------------------\n')
+                        # except :
+                        #         print()
+                        #         print('failed  :',i)
+                        #         print('-------------------------------------------------------------------------------------------\n')
                 
                 final_df.to_csv('finalDF.csv')
                 print('Last sync on : ',datetime.now())
