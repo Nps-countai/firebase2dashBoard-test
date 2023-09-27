@@ -56,36 +56,30 @@ def tip_data(i):
                 wildcard_query = db.child(i).child("tip").order_by_child("timestamp").limit_to_last(1).get()
                 od = wildcard_query.val()
                 lsatDay = od[list(od.keys())[0]]['timestamp']
-                # print('lsatDay : ',lsatDay)
                 startDay, endday = parse_datetime(lsatDay)
-                # print('start date:',startDay)
-                # print('end date:',endday)
-                
                 datefilter_tip = db.child(i).child("tip").order_by_child("timestamp").start_at(startDay).end_at(endday).get()
-
-                # print(len(datefilter_tip.val()))
                 fbData = datefilter_tip.val()
-                # print(fbData)
+                               
                 # cone tip
                 try:
                         temp_conetip = pd.json_normalize(fbData.values())
                 except:
                         temp_conetip = pd.json_normalize(fbData)
+                        
                 temp_conetip['millName'] = i
                 temp_conetip['detectedcone'] = temp_conetip.apply(lambda x : True if (str(x['detectedconetype']) != str(x['selectedconetype'])) else False, axis=1) #detectedconetype
-                # print(temp_conetip)
+                
                 #conetip
                 conetip_Nondefect = len(temp_conetip[(temp_conetip['detectedcone'] == False) ])
                 conetip_Defect = len(temp_conetip[(temp_conetip['detectedcone'] == True) ])
                 total_tip = conetip_Nondefect + conetip_Defect
+                
                 try:
                         defectPercen_CT =  (conetip_Defect / total_tip) * 100
                 except ZeroDivisionError:
-                        defectPercen_CT = 0
-                
+                        defectPercen_CT = 0                
                 return conetip_Nondefect,conetip_Defect, defectPercen_CT, lsatDay
-        except:
-                
+        except:                
                 print('tipdata NONE')
                 return 0, 0, 0,lsatDay
                 
@@ -96,14 +90,8 @@ def uv_data(i):
                 wildcard_query = db.child(i).child("uv").order_by_child("timestamp").limit_to_last(1).get()
                 od = wildcard_query.val()
                 lsatDay = od[list(od.keys())[0]]['timestamp']
-                # print('lsatDay : ',lsatDay)
                 startDay, endday = parse_datetime(lsatDay)
-                # print('start date:',startDay)
-                # print('end date:',endday)
-                
                 datefilter_tip = db.child(i).child("uv").order_by_child("timestamp").start_at(startDay).end_at(endday).get()
-
-                # print(len(datefilter_tip.val()))
                 fbData = datefilter_tip.val()
                 
                 # cone tip
@@ -112,13 +100,12 @@ def uv_data(i):
                 except:
                         temp = pd.json_normalize(fbData)
                 temp['millName'] = i
-                # print(temp)
+                
                 #uv        
                 uv_Nondefect = len(temp[(temp['detecteduv'] == 'False') ])
                 uv_Defect = len(temp[(temp['detecteduv'] == 'True') ])
-                total_uv = uv_Nondefect + uv_Defect
-                
-                
+                total_uv = uv_Nondefect + uv_Defect              
+                             
                 try:
                         ldefectPercen_UV = (uv_Defect / total_uv) *100
                 except ZeroDivisionError:
@@ -183,7 +170,7 @@ def updatedData():
                 for i in all_keys.val():
                         try:
                                 n+=1
-                                print(n)
+                                print('millNO : ',n)
                                 mill_list.append(i)
                                 conetip_Nondefect,conetip_Defect, defectPercen_CT,last_ctAt = tip_data(i)               
                                 uv_Nondefect,uv_Defect, defectPercen_UV,last_uvAt = uv_data(i)               
@@ -197,23 +184,24 @@ def updatedData():
                                 # final df
                                 lastactive = last_uvAt if last_ctAt<last_uvAt else last_ctAt
                                 data = [i,conetip_Nondefect,conetip_Defect,(conetip_Nondefect + conetip_Defect), defectPercen_CT,last_ctAt,uv_Nondefect,uv_Defect,(uv_Nondefect + uv_Defect), defectPercen_UV,last_uvAt,lastactive,tip_Alrmstatus, tipstatus_fromtime, uv_Alrmstatus, uvstatus_fromtime]
-                                print(data)
+                                # print(data)
                                 final_df.loc[len(final_df)] = data
                                 
                                 
                                 
                                 print('name: ',i)
-                                print('-------------------------------------------------------------------------------------------\n\n\n\n\n')
+                                print('-------------------------------------------------------------------------------------------\n')
                         except :
                                 print()
                                 print('failed  :',i)
-                                print('-------------------------------------------------------------------------------------------\n\n\n\n\n')
+                                print('-------------------------------------------------------------------------------------------\n')
                         
                 
                         
 
                 
                 final_df.to_csv('finalDF.csv')
+                print('Last sync on : ',datetime.now())
                 print("Syncing......")
                 time.sleep(30)
                 

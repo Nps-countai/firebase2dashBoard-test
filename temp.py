@@ -69,7 +69,7 @@ async def read_modelanalysis(request: Request):
 
 # graph response
 @app.get("/uptime/{item_id}", response_class=HTMLResponse)
-def get_chart(item_id: str,request: Request):
+async def get_chart(item_id: str,request: Request):
     print("in loop of uptime")
     uptime,LE,index,value = imageGenerator()
     print(type(index)," : ",type(value))
@@ -84,7 +84,7 @@ def get_chart(item_id: str,request: Request):
 
 
 def runapp():
-    uvicorn.run(app, host="127.0.0.1", port=8089)
+    uvicorn.run(app, host="127.0.0.1", port=8085)
 def updateData():
     from dataLoaderv1 import updatedData
 
