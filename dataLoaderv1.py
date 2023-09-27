@@ -153,9 +153,11 @@ firebaseConfig = {
         "appId": "1:99303364339:web:2b35fa36a438119edd4986",
         "measurementId": "G-QT2CRBY4NX"
         }
+
 # db initial
 firebase = pyrebase.initialize_app(firebaseConfig)
 db = firebase.database()
+
 # data define
 uv_df = pd.DataFrame(columns=[])
 conetip_df = pd.DataFrame(columns=[])
@@ -185,20 +187,14 @@ def updatedData():
                                 lastactive = last_uvAt if last_ctAt<last_uvAt else last_ctAt
                                 data = [i,conetip_Nondefect,conetip_Defect,(conetip_Nondefect + conetip_Defect), defectPercen_CT,last_ctAt,uv_Nondefect,uv_Defect,(uv_Nondefect + uv_Defect), defectPercen_UV,last_uvAt,lastactive,tip_Alrmstatus, tipstatus_fromtime, uv_Alrmstatus, uvstatus_fromtime]
                                 # print(data)
-                                final_df.loc[len(final_df)] = data
-                                
-                                
-                                
+                                final_df.loc[len(final_df)] = data                               
+                                                                
                                 print('name: ',i)
                                 print('-------------------------------------------------------------------------------------------\n')
                         except :
                                 print()
                                 print('failed  :',i)
                                 print('-------------------------------------------------------------------------------------------\n')
-                        
-                
-                        
-
                 
                 final_df.to_csv('finalDF.csv')
                 print('Last sync on : ',datetime.now())
