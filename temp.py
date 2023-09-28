@@ -42,7 +42,8 @@ async def read_posts(request: Request):
                                                     "mills" :  pd.read_csv('finalDF.csv'),#updatedData(),
                                                     "Uptime": uptime,
                                                     "le":  LE,
-                                                    "lh_time" : lh_time})
+                                                    "lh_time" : lh_time,
+                                                    "datetime" : datetime})
 
 
 
